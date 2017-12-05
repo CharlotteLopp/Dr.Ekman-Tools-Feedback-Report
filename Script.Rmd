@@ -7,7 +7,7 @@ output:
   word_document: default
 ---
 
-## Results
+## Results and Discussion
 
 ```{r load-libraries, message = FALSE, echo = FALSE}
 # Be sure to install these packages before running this script
@@ -48,13 +48,19 @@ library("phyloseq")
 library("grid")
 ```
 
+When we looked at the metric of utility by race we saw a general trend that for each demographic, except for "Black," the pluarlity was for a usefulness of experience score of 5 (Figure 2). The margin of difference between the number of people who scored the usefulness as a 5 versus 4 was significantly larger in participants who identified as "White" than any other ethnicity. This probably a product of the fact that vast majority of our participants identified as "White" (Figure 1). Taking a closer look at those who did not identify as "White," we see that those who identified as "Hispanic" were the next highest in terms of percentage that scored the usefulness of experience as 5 (Figure 3). Of the 3 "Black" participants (Figure 4), there was 1 score of 3 and 2 scores of 4; it is the only demographic that did not have a single score of 5.  
+
+
+
 ```{r setup, echo = FALSE}
 # This downloads the csv file with our data 
-# into our project directory 
+# into our project directory
 data <- read.csv(paste0("data/",
                                 "Tools_Feedback.csv"),
                                 header = TRUE,
                                 stringsAsFactors = FALSE)
+
+subsetted_data <- subset(data, select = -c(respondent_ID, collector_ID, country))
 ```
 
 ```{r two, echo = FALSE}
@@ -69,8 +75,10 @@ data %>%
   geom_col(position = "dodge") +
   xlab("Ethnicity") +
   ylab("Count") + 
-  ggtitle("Racial Distribution of Participants")
+  ggtitle("Ethnic Distribution of Participants")
 ```
+
+**Figure 1**: This figure shows the ethnic distribution of participants.
 
 ```{r three, echo = FALSE}
 # Look at the distribution of usefulness metric
@@ -88,36 +96,7 @@ data %>%
   ggtitle("Usefulness of Experience by Race")
 ```
 
-#### Only Participants That Indicated Race of "Black"
-```{r four, echo = FALSE}
-data %>%
-  filter(ethnicity_race == "Black") %>%
-  kable()
-```
-
-#### Only Participants That Indicated Race of "Multi-racial"
-```{r five, echo = FALSE}
-data %>%
-  filter(ethnicity_race == "Multi-racial") %>%
-  kable()
-```
-
-#### Only Participants That Indicated Race of "Hispanic"
-```{r six, echo = FALSE}
-data %>%
-  filter(ethnicity_race == "Hispanic") %>%
-  kable()
-```
-
-### Lack of Variety and Racial Prejudice 
-
-The issue of lack of variety and racial prejudice could be addressed together by adding new photos to the set already in the product. The racial issue was that there was a number of comments on that certain demographics seemed to be only represented expressing negatively associated expressions (like anger, contempt, disgust). There could be the “prime” photos that Paul hand selected because he believed them to be best representative of the emotion in question but when it comes to just straight practicing, there can be a much larger pool of faces. A lot of people who brought up the issue of variety said they went through the photos a number of times and after such extensive practicing, they began doubting whether they were identifying the expression based on comprehension or recognition. 
-
-### Technical Issues
-People did not find the website user-friendly or experienced technical issues. Some would mention that they would have difficulty loading a page or the website wouldn’t acknowledge that they had completed a section. The biggest themes were that our website is not mobile-friendly so it wasn’t as easily accessible and “on-the-go” as people would have liked and that there were times when the website said there was a certificate but they did not receive one despite scoring very high on the tests. I think this is a pretty easy fix in terms of ensuring that the website is compatible in terms of refresh rates, etc with all the major browsers and that we go through whatever channels in WordPress to ensure mobile-friendly access. 
-
-### Money: Barrier to Entry
-The barrier to entry issue of money could be solved in a variety of ways. People would say that they were so busy in their personal and professional lives that they didn’t have a chance to use their tools. I think a built-in aspect where if go to a help section, they will just be navigated to the option of a month extension that will be automatically granted if its their first time requesting (this will bypass the issues of customer service response time, etc.) If they go to cancel, make it simply worth it for them to keep the service – a steep discount or something like that. There could be a referral system with user-specific discount codes in order to track how people are finding out about us and why they are type buying. This would also be helpful in terms of giving us data to deal with without having to ask how they heard about us in a survey. If we don’t want to make it a cut in profit with discounts for renewing customers, there was also suggestions in the feedback sections that we provide them with something that they can continue to use after their year is up – the idea of paying so much for just one year and then no access to any of the materials after that was just not worth it for people. 
+**Figure 2**: This figure shows the usefulness of experience score by ethnic groups.
 
 ```{r seven, echo = FALSE}
 # Look at the distribution of usefulness metric
@@ -136,6 +115,8 @@ data %>%
   ggtitle("Usefulness of Experience by Race")
 ```
 
+**Figure 3**: This figure shows the usefulness of experience score by all the ethnic groups other than "White."
+
 ```{r eight, echo = FALSE}
 data %>% 
   filter(ethnicity_race != "White") %>%
@@ -143,6 +124,39 @@ data %>%
   tally() %>%
   kable()
 ```
+
+**Figure 4**: This table shows the total number of participants for each ethnic group for a better and more accurate understanding of Figure 3. 
+
+
+
+Curious about the trend seen in the previous figures about usefulness of experience scores, we were curious to see what correlation that had to education (Figure 5). Overall, a majority of participants had either a highest educational level of university or post graduate. It is interesting to note that for our participants that identified as "Black," they all had post graduate education. For "Asian/Pacific Islander" and "Hispanic," there was more of an even spread among high school, university, and post graduate. 
+
+
+
+```{r education-by-race, echo = FALSE}
+data %>%
+  group_by(education, ethnicity_race) %>%
+  tally()%>%
+  ggplot(aes(x = education,
+             y = n, 
+             fill = education)) + 
+  geom_col(position = "dodge") + 
+  facet_wrap(~ ethnicity_race) + 
+  theme(axis.text.x =
+            element_text(angle = 90,
+                         hjust = 1)) +
+  xlab("Highest Level of Education") +
+  ylab("Count") + 
+  ggtitle("Highest Level of Education by Ethnic Group")
+```
+
+**Figure 5**: This figure shows highest level of education of participants by ethnic group.
+
+
+
+When we looked at the monetary value evaluations for the product, we saw that every ethnic group was represented except for those that identified as "Black" (Figure 6). The general trend for all ethnicities were the scores: average, above average, and excellent. For "White" participants, the majority was in these three aforementioned evaluations. This demographic was also the only one to have evaluations of poor. "Multi-racial" were the only other participants to those that identified as "White" to evaluate the monetary value of the product as below average. "Asian/Pacific Islander" participants scored as either excellent or above average. "Hispanic" participants evaluated it as either excellent or average. 
+
+
 
 ```{r thirteen, echo = FALSE}
 # Look at the distribution of value metric
@@ -155,14 +169,83 @@ data %>%
              y = n,
              fill = money_value)) +
   geom_col(position = "dodge") +
-  facet_wrap( ~ ethnicity_race) +
+  facet_wrap(~ ethnicity_race) +
   theme(axis.text.x =
             element_text(angle = 90,
                          hjust = 1)) +
-  xlab("Money Value") +
+  xlab("Monetary Value") +
   ylab("Count") + 
-  ggtitle("Money Value by Race")
+  ggtitle("Monetary Value by Ethnic Group")
 ```
+
+**Figure 6**: This figure shows the money value evaluation of the product by ethnic group.
+
+
+
+In order to take a more in-depth investigation into these trends, we looked at the free answer questions by ethnic group (Figures 7-10). For those that identified as "Black," the only response written was to answer the question asking to describe their experience where they expressed enjoyment of the course but difficulty in applying it to every day.  
+
+
+
+#### Only Participants That Indicated Race of "Black"
+```{r four, echo = FALSE}
+subsetted_data %>%
+  filter(ethnicity_race == "Black", ) %>%
+  kable()
+```
+
+**Figure 7**: This table shows the answers for all the participants that identified as "Black."
+
+
+
+It is important to note that only 3 of the participants (total being 10) that identified as "Multi-racial" answered the questions regarding what they disliked about their experience, what they would change for an improvement, and what they liked most; conversely, all but 3 replied to the question asking to describe their overall experience. For the question asking what they disliked about their experience, "Multi-racial" partipants expressed that there wasn't enough variety, reasoning behind the answers, and that it felt too brief. For the question asking what could be improved, they suggested more variety in scenarios as well as in the ways to test the knowledge, a more user-friendly interface, and more information behind the answers provided. For the question about what they enjoyed the most, they expressed overall enjoyment of the products we have as a company. For the question asking to describe their overall experience, all the answers were very positive and reflecting a learned skill that they enjoyed and were able to apply in everyday life. 
+
+
+
+#### Only Participants That Indicated Ethnicity of "Multi-racial"
+```{r five, echo = FALSE}
+subsetted_data %>%
+  filter(ethnicity_race == "Multi-racial") %>%
+  kable()
+```
+
+**Figure 8**: This table shows the answers for all the participants that identified as "Multi-racial."
+
+
+
+Out of those that identified as "Hispanic," only 2 of them answered the questions regarding what they disliked about their experience, what they would change for an improvement, and what they liked most. 6 of the 23 did not respond to the question asking to describe their overall experience. What they disliked was the length and digital platform. What both of them said in terms of changes for improvement would be a more mobile friendly platform. The things they liked most were being able to apply it to every day life and the content of the trainings. Their descriptions of the overall expereience 
+
+
+
+#### Only Participants That Indicated Ethnicity of "Hispanic"
+```{r six, echo = FALSE}
+subsetted_data %>%
+  filter(ethnicity_race == "Hispanic") %>%
+  kable()
+```
+
+**Figure 9**: This table shows the answers for all the participants that identified as "Hispanic."
+
+#### Only Participants That Indicated Ethnicity of "White"
+```{r six, echo = FALSE}
+subsetted_data %>%
+  filter(ethnicity_race == "White") %>%
+  kable()
+```
+
+
+
+### Lack of Variety and Racial Prejudice 
+The issue of lack of variety and racial prejudice could be addressed together by adding new photos to the set already in the product. The racial issue was that there was a number of comments on that certain demographics seemed to be only represented expressing negatively associated expressions (like anger, contempt, disgust). There could be the “prime” photos that Paul hand selected because he believed them to be best representative of the emotion in question but when it comes to just straight practicing, there can be a much larger pool of faces. A lot of people who brought up the issue of variety said they went through the photos a number of times and after such extensive practicing, they began doubting whether they were identifying the expression based on comprehension or recognition. 
+
+There's also the issue of race. One thing that stands out to me is that race is a social construct and doesn't in fact exist and yet we are using racial vernacular. Another thing is that, as mentioned in the first meeting, there would be value in looking at what the actual distribution is of ethnicity across the different emotions. Being a product based on and valued by its scientific integrity, I believe its also important that we show as little bias as possible. Depending on our vision and the scope of relavancy we want to encompass in terms of societal constructs and social issues, its also important to have (and ultimately teach with) an as inclusive of a tool as possible. Being able to read and understand the faces that are unlike ours (regardless of what ethnicity "ours" refers to but particularly when it comes to minorities) is so crucially integral particularly when it comes to the justice system and law enforcement - which happens to be a sector that a lot of our clients come from. MacArthur fellow and adjunct professor at Stanford University, Jennifer Eberhardt has done a lot of research on the importance of implicit racial biases and received the Genius award for her work. For us to not only be a commercial product but one whose core was founded in science, I think it is very important that we take this into consideration and really think about what message and messages we are sending and want to send. 
+
+### Technical Issues
+People did not find the website user-friendly or experienced technical issues. Some would mention that they would have difficulty loading a page or the website wouldn’t acknowledge that they had completed a section. The biggest themes were that our website is not mobile-friendly so it wasn’t as easily accessible and “on-the-go” as people would have liked and that there were times when the website said there was a certificate but they did not receive one despite scoring very high on the tests. I think this is a pretty easy fix in terms of ensuring that the website is compatible in terms of refresh rates, etc with all the major browsers and that we go through whatever channels in WordPress to ensure mobile-friendly access. 
+
+### Money: Barrier to Entry
+The barrier to entry issue of money could be solved in a variety of ways. People would say that they were so busy in their personal and professional lives that they didn’t have a chance to use their tools. I think a built-in aspect where if go to a help section, they will just be navigated to the option of a month extension that will be automatically granted if its their first time requesting (this will bypass the issues of customer service response time, etc.) If they go to cancel, make it simply worth it for them to keep the service – a steep discount or something like that. There could be a referral system with user-specific discount codes in order to track how people are finding out about us and why they are type buying. This would also be helpful in terms of giving us data to deal with without having to ask how they heard about us in a survey. If we don’t want to make it a cut in profit with discounts for renewing customers, there was also suggestions in the feedback sections that we provide them with something that they can continue to use after their year is up – the idea of paying so much for just one year and then no access to any of the materials after that was just not worth it for people.
+
+
 
 ```{r one, echo = FALSE}
 # Look at the distribution of usefulness metric
@@ -180,6 +263,8 @@ data %>%
   ggtitle("Usefulness of Experience by Gender")
 ```
 
+**Figure 11**:
+
 ```{r nine, echo = FALSE}
 # Look at the distribution of usefulness metric
 # by gender
@@ -196,6 +281,8 @@ data %>%
   ggtitle("Usefulness of Experience by Age")
 ```
 
+**Figure 12**:
+
 ```{r ten, echo = FALSE}
 data %>%
   group_by(age) %>%
@@ -208,6 +295,8 @@ data %>%
   ylab("Count") +
   ggtitle("Distribution of Age")
 ```
+
+**Figure 13**:
 
 ```{r eleven, echo = FALSE}
 # Look at the distribution of usefulness metric
@@ -225,6 +314,8 @@ data %>%
   ggtitle("Usefulness of Experience by Education")
 ```
 
+**Figure 14**:
+
 ```{r twelve, echo = FALSE}
 data %>%
   group_by(education) %>%
@@ -233,8 +324,17 @@ data %>%
              y = n,
              fill = education)) +
   geom_col(position = "dodge") + 
+  theme(axis.text.x =
+            element_text(angle = 90,
+                         hjust = 1)) +
   xlab("Highest Education Level") +
   ylab("Count") +
   ggtitle("Distribution of Highest Education Level")
 ```
 
+**Figure 15**:
+
+
+
+### Survey Issues/Collecting More Accurately Representative Information
+Building some data gathering into the infrastructure of the website would make it much easier for us to discern trends that can be optimized upon in order to increase profit margins. Our target demographic is clear: (majority-based) male, 30-49, have university or post-graduate level education, white, and lives in the US, UK, or Canada. Getting a name, email address, zip code and country, and one or other two data points shouldn't be that hard to do. Our product is not one of little investment - a sentiment that has been echoed by many in the Feedback Survey. If they have decided to buy the product, in order to set up their account and to use it, I am highly doubtful that they would object. Filling out those few boxes is omnipresent - our world is saturated with sign up pages for websites, products, etc. Also, there are many responses where people write their whole back story and why these tools were so valuable and useful to them - we cast a very specific net with these tools and as a result, in my opinion, catch a very dedicated group of people. I believe that detail should be noted and valued when it comes to customer participation and engagement. A referral system as previously stated would be helpful in terms of tracking what demographic our customer base lies in but would also provide incentive for current users and potentially bring us new customers that would otherwise not have bought our product. Considering we have a solid customer base in educational institutions and law enforcement, I believe the referral system would be particularly useful and helpful. 
