@@ -1,0 +1,240 @@
+---
+title: "Report on Dr. Ekman's Tools Feedback Survey"
+author: "Charlotte Lopp"
+date: "December 4, 2017"
+output:
+  html_document: default
+  word_document: default
+---
+
+## Results
+
+```{r load-libraries, message = FALSE, echo = FALSE}
+# Be sure to install these packages before running this script
+# They can be installed either with the intall.packages() function
+# or with the 'Packages' pane in RStudio
+
+# load general-use packages
+library("dplyr")
+library("tidyr")
+library("knitr")
+library("ggplot2")
+
+# this package allows for the easy inclusion of literature citations in our Rmd
+# more info here: https://github.com/crsh/citr
+# and here:
+# http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
+library("citr")
+
+# These are the primary packages well use to clean and analyze the data
+# this package needs to be installed from bioconductor -- it's not on CRAN
+# see info here: https://benjjneb.github.io/dada2/dada-installation.html
+library("dada2")
+
+# This to export a fasta of our final denoised sequence variants
+library("seqinr")
+
+# To install this you have to install from GitHub
+# See more info here: https://github.com/leffj/mctoolsr
+# run this -- install.packages("devtools")
+# and then this -- devtools::install_github("leffj/mctoolsr")
+library("mctoolsr")
+
+# And this to visualize our results
+# it also needs to be installed from bioconductor
+library("phyloseq")
+
+# Add this for combining two different graphs
+library("grid")
+```
+
+```{r setup, echo = FALSE}
+# This downloads the csv file with our data 
+# into our project directory 
+data <- read.csv(paste0("data/",
+                                "Tools_Feedback.csv"),
+                                header = TRUE,
+                                stringsAsFactors = FALSE)
+```
+
+```{r two, echo = FALSE}
+# This looks at ethnicity/race distribution of
+# participants
+data %>%
+  group_by(ethnicity_race) %>%
+  tally() %>%
+  ggplot(aes(x = ethnicity_race,
+             y = n,
+             fill = ethnicity_race)) +
+  geom_col(position = "dodge") +
+  xlab("Ethnicity") +
+  ylab("Count") + 
+  ggtitle("Racial Distribution of Participants")
+```
+
+```{r three, echo = FALSE}
+# Look at the distribution of usefulness metric
+# by ethnicity
+data %>% 
+  group_by(usefulness_of_experience, ethnicity_race) %>%
+  tally() %>%
+  ggplot(aes(x = usefulness_of_experience,
+             y = n,
+             fill = usefulness_of_experience)) +
+  geom_col(position = "dodge") +
+  facet_wrap( ~ ethnicity_race) +
+  xlab("Usefulness of Experience") +
+  ylab("Count") + 
+  ggtitle("Usefulness of Experience by Race")
+```
+
+#### Only Participants That Indicated Race of "Black"
+```{r four, echo = FALSE}
+data %>%
+  filter(ethnicity_race == "Black") %>%
+  kable()
+```
+
+#### Only Participants That Indicated Race of "Multi-racial"
+```{r five, echo = FALSE}
+data %>%
+  filter(ethnicity_race == "Multi-racial") %>%
+  kable()
+```
+
+#### Only Participants That Indicated Race of "Hispanic"
+```{r six, echo = FALSE}
+data %>%
+  filter(ethnicity_race == "Hispanic") %>%
+  kable()
+```
+
+### Lack of Variety and Racial Prejudice 
+
+The issue of lack of variety and racial prejudice could be addressed together by adding new photos to the set already in the product. The racial issue was that there was a number of comments on that certain demographics seemed to be only represented expressing negatively associated expressions (like anger, contempt, disgust). There could be the “prime” photos that Paul hand selected because he believed them to be best representative of the emotion in question but when it comes to just straight practicing, there can be a much larger pool of faces. A lot of people who brought up the issue of variety said they went through the photos a number of times and after such extensive practicing, they began doubting whether they were identifying the expression based on comprehension or recognition. 
+
+### Technical Issues
+People did not find the website user-friendly or experienced technical issues. Some would mention that they would have difficulty loading a page or the website wouldn’t acknowledge that they had completed a section. The biggest themes were that our website is not mobile-friendly so it wasn’t as easily accessible and “on-the-go” as people would have liked and that there were times when the website said there was a certificate but they did not receive one despite scoring very high on the tests. I think this is a pretty easy fix in terms of ensuring that the website is compatible in terms of refresh rates, etc with all the major browsers and that we go through whatever channels in WordPress to ensure mobile-friendly access. 
+
+### Money: Barrier to Entry
+The barrier to entry issue of money could be solved in a variety of ways. People would say that they were so busy in their personal and professional lives that they didn’t have a chance to use their tools. I think a built-in aspect where if go to a help section, they will just be navigated to the option of a month extension that will be automatically granted if its their first time requesting (this will bypass the issues of customer service response time, etc.) If they go to cancel, make it simply worth it for them to keep the service – a steep discount or something like that. There could be a referral system with user-specific discount codes in order to track how people are finding out about us and why they are type buying. This would also be helpful in terms of giving us data to deal with without having to ask how they heard about us in a survey. If we don’t want to make it a cut in profit with discounts for renewing customers, there was also suggestions in the feedback sections that we provide them with something that they can continue to use after their year is up – the idea of paying so much for just one year and then no access to any of the materials after that was just not worth it for people. 
+
+```{r seven, echo = FALSE}
+# Look at the distribution of usefulness metric
+# by ethnicity
+data %>% 
+  filter(ethnicity_race != "White") %>%
+  group_by(usefulness_of_experience, ethnicity_race) %>%
+  tally() %>%
+  ggplot(aes(x = usefulness_of_experience,
+             y = n,
+             fill = usefulness_of_experience)) +
+  geom_col(position = "dodge") +
+  facet_wrap( ~ ethnicity_race) +
+  xlab("Usefulness of Experience") +
+  ylab("Count") + 
+  ggtitle("Usefulness of Experience by Race")
+```
+
+```{r eight, echo = FALSE}
+data %>% 
+  filter(ethnicity_race != "White") %>%
+  group_by(ethnicity_race) %>%
+  tally() %>%
+  kable()
+```
+
+```{r thirteen, echo = FALSE}
+# Look at the distribution of value metric
+# by ethnicity
+data %>% 
+  filter(money_value != "N/A") %>%
+  group_by(money_value, ethnicity_race) %>%
+  tally() %>%
+  ggplot(aes(x = money_value,
+             y = n,
+             fill = money_value)) +
+  geom_col(position = "dodge") +
+  facet_wrap( ~ ethnicity_race) +
+  theme(axis.text.x =
+            element_text(angle = 90,
+                         hjust = 1)) +
+  xlab("Money Value") +
+  ylab("Count") + 
+  ggtitle("Money Value by Race")
+```
+
+```{r one, echo = FALSE}
+# Look at the distribution of usefulness metric
+# by gender
+data %>% 
+  group_by(usefulness_of_experience, gender) %>%
+  tally() %>%
+  ggplot(aes(x = usefulness_of_experience,
+             y = n,
+             fill = usefulness_of_experience)) +
+  geom_col(position = "dodge") +
+  facet_wrap( ~ gender) +
+  xlab("Usefulness of Experience") +
+  ylab("Count") +
+  ggtitle("Usefulness of Experience by Gender")
+```
+
+```{r nine, echo = FALSE}
+# Look at the distribution of usefulness metric
+# by gender
+data %>% 
+  group_by(usefulness_of_experience, age) %>%
+  tally() %>%
+  ggplot(aes(x = usefulness_of_experience,
+             y = n,
+             fill = usefulness_of_experience)) +
+  geom_col(position = "dodge") +
+  facet_wrap( ~ age) +
+  xlab("Usefulness of Experience") +
+  ylab("Count") +
+  ggtitle("Usefulness of Experience by Age")
+```
+
+```{r ten, echo = FALSE}
+data %>%
+  group_by(age) %>%
+  tally() %>%
+  ggplot(aes(x = age,
+             y = n,
+             fill = age)) +
+  geom_col(position = "dodge") + 
+  xlab("Age") +
+  ylab("Count") +
+  ggtitle("Distribution of Age")
+```
+
+```{r eleven, echo = FALSE}
+# Look at the distribution of usefulness metric
+# by gender
+data %>% 
+  group_by(usefulness_of_experience, education) %>%
+  tally() %>%
+  ggplot(aes(x = usefulness_of_experience,
+             y = n,
+             fill = usefulness_of_experience)) +
+  geom_col(position = "dodge") +
+  facet_wrap( ~ education) +
+  xlab("Usefulness of Experience") +
+  ylab("Count") +
+  ggtitle("Usefulness of Experience by Education")
+```
+
+```{r twelve, echo = FALSE}
+data %>%
+  group_by(education) %>%
+  tally() %>%
+  ggplot(aes(x = education,
+             y = n,
+             fill = education)) +
+  geom_col(position = "dodge") + 
+  xlab("Highest Education Level") +
+  ylab("Count") +
+  ggtitle("Distribution of Highest Education Level")
+```
+
