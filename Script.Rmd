@@ -129,11 +129,11 @@ data %>%
 
 
 
-Curious about the trend seen in the previous figures about usefulness of experience scores, we were curious to see what correlation that had to education (Figure 5). Overall, a majority of participants had either a highest educational level of university or post graduate. It is interesting to note that for our participants that identified as "Black," they all had post graduate education. For "Asian/Pacific Islander" and "Hispanic," there was more of an even spread among high school, university, and post graduate. 
+Curious about the trend seen in the previous figures about usefulness of experience scores, we were curious to see what correlation that had to education (Figure 5). Overall, a majority of participants had either a highest educational level of university or post graduate (Figure 5 and 15). It is interesting to note that for our participants that identified as "Black," they all had post graduate education. For "Asian/Pacific Islander" and "Hispanic," there was more of an even spread among high school, university, and post graduate. 
 
 
 
-```{r education-by-race, echo = FALSE}
+```{r fifteen, echo = FALSE}
 data %>%
   group_by(education, ethnicity_race) %>%
   tally()%>%
@@ -212,7 +212,7 @@ subsetted_data %>%
 
 
 
-Out of those that identified as "Hispanic," only 2 of them answered the questions regarding what they disliked about their experience, what they would change for an improvement, and what they liked most. 6 of the 23 did not respond to the question asking to describe their overall experience. What they disliked was the length and digital platform. What both of them said in terms of changes for improvement would be a more mobile friendly platform. The things they liked most were being able to apply it to every day life and the content of the trainings. Their descriptions of the overall expereience 
+Out of those that identified as "Hispanic," only 2 of them answered the questions regarding what they disliked about their experience, what they would change for an improvement, and what they liked most. 6 of the 23 did not respond to the question asking to describe their overall experience. What they disliked was the length and digital platform. What both of them said in terms of changes for improvement would be a more mobile friendly platform. The things they liked most were being able to apply it to every day life and the content of the trainings. Their descriptions of the overall experience were very positive quoting interesting tools, usefulness and practicality, using it for teaching a college course, and being more in tune with others because of deeper understanding. 
 
 
 
@@ -226,11 +226,13 @@ subsetted_data %>%
 **Figure 9**: This table shows the answers for all the participants that identified as "Hispanic."
 
 #### Only Participants That Indicated Ethnicity of "White"
-```{r six, echo = FALSE}
+```{r fourteen, echo = FALSE}
 subsetted_data %>%
   filter(ethnicity_race == "White") %>%
   kable()
 ```
+
+***Figure 10**: This table shows the answers for all the participants that identified as "White."
 
 
 
@@ -244,6 +246,10 @@ People did not find the website user-friendly or experienced technical issues. S
 
 ### Money: Barrier to Entry
 The barrier to entry issue of money could be solved in a variety of ways. People would say that they were so busy in their personal and professional lives that they didn’t have a chance to use their tools. I think a built-in aspect where if go to a help section, they will just be navigated to the option of a month extension that will be automatically granted if its their first time requesting (this will bypass the issues of customer service response time, etc.) If they go to cancel, make it simply worth it for them to keep the service – a steep discount or something like that. There could be a referral system with user-specific discount codes in order to track how people are finding out about us and why they are type buying. This would also be helpful in terms of giving us data to deal with without having to ask how they heard about us in a survey. If we don’t want to make it a cut in profit with discounts for renewing customers, there was also suggestions in the feedback sections that we provide them with something that they can continue to use after their year is up – the idea of paying so much for just one year and then no access to any of the materials after that was just not worth it for people.
+
+
+
+Another metric we were interested in was usefulness of experience by gender (Figure 11). Here we can see that more of the participants were male. A majority for both men and women scored it as either 4 or 5 in terms of usefulness.
 
 
 
@@ -263,7 +269,13 @@ data %>%
   ggtitle("Usefulness of Experience by Gender")
 ```
 
-**Figure 11**:
+**Figure 11**: This figure shows usefulness of experience scores by gender.
+
+
+
+When we looked at the usefulness of experience by age (Figure 12), we saw that a plurality of our participants fell within the age group of 30-49 (Figure 13). Almost all of our participants were between the ages of 19 and 64. For each age group except for 0-18, the highest count was for a usefulness score of 5. For 0-18 aged participants, it was a split between 3 and 5 for the majority. Usually the score of 4 was the next highest in terms of count but for the age group 65-100, scores of 3 and 4 were tied for second place.
+
+
 
 ```{r nine, echo = FALSE}
 # Look at the distribution of usefulness metric
@@ -281,7 +293,7 @@ data %>%
   ggtitle("Usefulness of Experience by Age")
 ```
 
-**Figure 12**:
+**Figure 12**: This figure shows usefulness of experience scores by age.
 
 ```{r ten, echo = FALSE}
 data %>%
@@ -296,7 +308,13 @@ data %>%
   ggtitle("Distribution of Age")
 ```
 
-**Figure 13**:
+**Figure 13**: This figure shows the age distribution of participants in order to have a more accurate understanding of Figure 12. 
+
+
+
+Finally, the last thing we looked at was usefulness of experience scores by education (Figure 14). We found that for every educaton group, the majority scored either 4 or 5. As was established earlier, most of our participants had university or post graduate education (Figure 15). 
+
+
 
 ```{r eleven, echo = FALSE}
 # Look at the distribution of usefulness metric
@@ -314,7 +332,7 @@ data %>%
   ggtitle("Usefulness of Experience by Education")
 ```
 
-**Figure 14**:
+**Figure 14**: This figure shows usefulness of experience scores by education.
 
 ```{r twelve, echo = FALSE}
 data %>%
@@ -332,7 +350,7 @@ data %>%
   ggtitle("Distribution of Highest Education Level")
 ```
 
-**Figure 15**:
+**Figure 15**: This figure shows the age distribution of participants in order to have a more accurate understanding of Figure 14. 
 
 
 
